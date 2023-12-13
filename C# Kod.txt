@@ -1,0 +1,991 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO.Ports;
+using System.Threading;
+
+namespace OptimumDeneme
+{
+    public partial class Form1 : Form
+    {
+        int[] arrayReplay = new int[10000];
+        int[] arrayReplayNo = new int[10000];
+        int[] arrayCheck = new int[10000];
+        int arrayControl = 2;
+        int arraysayac = 0;
+        int replaysayac;
+        int homex = 0;
+        int homey = 0;
+        int homez = 0;
+        int tutx = 0;
+        int tuty = 0;
+        int tutz = 0;
+        int gripSayac = 0;
+        int gitX;
+        int gitY;
+        int gitZ;
+        int sureSayac = 0;
+        int sure;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            serialPort1.PortName = "COM5";
+            serialPort1.BaudRate = 9600;
+            serialPort1.Open();
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            if (arrayControl == 1)
+            {
+                arrayReplay[arraysayac] = 1;  //Y+
+                arraysayac++;
+            }
+
+            if (arrayControl == 2)
+            {
+                tuty++;  //Y+
+                arrayReplayNo[arraysayac] = 1;  //Y+
+                arraysayac++;
+            }
+
+            listBox2.Items.Add("1");
+            homey++;
+            listBox3.Items.Add("Y :" + homey);
+            serialPort1.Write("3");
+            sureSayac++;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (arrayControl == 1)
+            {
+                arrayReplay[arraysayac] = 2;  //Y-
+                arraysayac++;
+            }
+
+            if (arrayControl == 2)
+            {
+                tuty--;  //Y-
+                arrayReplayNo[arraysayac] = 2;  //Y+
+                arraysayac++;
+            }
+
+            listBox2.Items.Add("2");
+            homey--;
+            listBox3.Items.Add("Y :" + homey);
+            serialPort1.Write("4");
+            sureSayac++;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            if (arrayControl == 1)
+            {
+                arrayReplay[arraysayac] = 3;  //Z+
+                arraysayac++;
+            }
+
+            if (arrayControl == 2)
+            {
+                tutz++;  //Z+
+                arrayReplayNo[arraysayac] = 3;  //Y+
+                arraysayac++;
+
+            }
+
+            listBox2.Items.Add("3");
+            homez++;
+            listBox3.Items.Add("Z :" + homez);
+            serialPort1.Write("5");
+            sureSayac++;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            if (arrayControl == 1)
+            {
+                arrayReplay[arraysayac] = 4;  //X+
+                arraysayac++;
+            }
+
+            if (arrayControl == 2)
+            {
+                tutx++;  //X+
+                arrayReplayNo[arraysayac] = 4;  //Y+
+                arraysayac++;
+            }
+
+            listBox2.Items.Add("4");
+            homex++;
+            listBox3.Items.Add("X :" + homex);
+            serialPort1.Write("1");
+            sureSayac++;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+            if (arrayControl == 1)
+            {
+                arrayReplay[arraysayac] = 5;  //Z-
+                arraysayac++;
+            }
+
+            if (arrayControl == 2)
+            {
+                tutz--;     //Z-
+                arrayReplayNo[arraysayac] = 5;  //Y+
+                arraysayac++;
+
+            }
+
+
+            listBox2.Items.Add("5");
+            homez--;
+            listBox3.Items.Add("Z :" + homez);
+            serialPort1.Write("6");
+            sureSayac++;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+            if (arrayControl == 1)
+            {
+                arrayReplay[arraysayac] = 6;  //X-
+                arraysayac++;
+            }
+
+            if (arrayControl == 2)
+            {
+                tutx--;  //X-
+                arrayReplayNo[arraysayac] = 6;  //Y+
+                arraysayac++;
+
+            }
+
+
+            listBox2.Items.Add("6");
+            homex--;
+            listBox3.Items.Add("X :" + homex);
+            serialPort1.Write("2");
+            sureSayac++;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+
+            arrayReplay[arraysayac] = 7;  //GRIPPER ON
+            arraysayac++;
+            arrayReplayNo[arraysayac] = 7;  //Y+
+            arraysayac++;
+
+
+
+            listBox2.Items.Add("7");
+            gripSayac++;
+            serialPort1.Write("7");
+            sureSayac++;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+
+            arrayReplay[arraysayac] = 8;  //GRIPPER OFF
+            arraysayac++;
+            arrayControl = 1;
+            arrayReplayNo[arraysayac] = 8;  //Y+
+            arraysayac++;
+
+            listBox2.Items.Add("8");
+            gripSayac--;
+            serialPort1.Write("8");
+            sureSayac++;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string tekrarsayisi = textBox1.Text;
+            int tekrar = Convert.ToInt32(tekrarsayisi);
+
+            gitX = homex * (-1);
+            gitY = homey * (-1);
+            gitZ = homez * (-1);
+            sure = (int)(sureSayac * 0.5 * 1000);
+
+            listBox4.Items.Add("X :" + homex);
+            listBox4.Items.Add("Y :" + homey);
+            listBox4.Items.Add("Z :" + homez);
+            listBox4.Items.Add("Git X :" + gitX);
+            listBox4.Items.Add("Git Y :" + gitY);
+            listBox4.Items.Add("Git Z :" + gitZ);
+
+
+
+
+
+
+            if (checkBox1.Checked == true)
+
+            {
+                sure = (int)(sureSayac * 0.4 * 1000);
+                //Home Konumuna Dönüş
+
+                if (tekrar == 0)
+                {
+                    while (true)
+                    {
+
+                        if (homez > 0)
+                        {
+                            for (int homeControl = 0; homeControl < homez; homeControl++)
+                            {
+                                serialPort1.Write("6");
+                            }
+
+                        }
+
+                        if (homez < 0)
+                        {
+                            for (int homeControl = 0; homeControl > homez; homeControl--)
+                            {
+                                serialPort1.Write("5");
+                            }
+
+                        }
+
+                        if (homex > 0)
+                        {
+                            for (int homeControl = 0; homeControl < homex; homeControl++)
+                            {
+                                serialPort1.Write("2");
+                            }
+
+                        }
+
+                        if (homex < 0)
+                        {
+                            for (int homeControl = 0; homeControl > homex; homeControl--)
+                            {
+                                serialPort1.Write("1");
+                            }
+
+                        }
+
+                        if (homey > 0)
+                        {
+                            for (int homeControl = 0; homeControl < homey; homeControl++)
+                            {
+                                serialPort1.Write("4");
+                            }
+
+                        }
+
+                        if (homey < 0)
+                        {
+                            for (int homeControl = 0; homeControl > homey; homeControl--)
+                            {
+                                serialPort1.Write("3");
+                            }
+
+                        }
+
+                        if (gripSayac > 0)
+                        {
+                            serialPort1.Write("8");
+                        }
+
+                        if (gripSayac < 0)
+                        {
+                            serialPort1.Write("7");
+                        }
+
+                        //Home konumuna dönüş bitti.
+
+
+
+
+
+                        //Optimum Tutma Konumuna Gidiş
+
+                        if (tutx > 0)
+                        {
+                            for (int tutControl = 0; tutControl < tutx; tutControl++)
+                            {
+                                serialPort1.Write("1");
+                            }
+
+                        }
+
+                        if (tutx < 0)
+                        {
+                            for (int tutControl = 0; tutControl > tutx; tutControl--)
+                            {
+                                serialPort1.Write("2");
+                            }
+
+                        }
+
+                        serialPort1.Write("7"); // GRIPPER AÇILDI
+
+                        if (tuty > 0)
+                        {
+                            for (int tutControl = 0; tutControl < tuty; tutControl++)
+                            {
+                                serialPort1.Write("3");
+                            }
+
+                        }
+
+                        if (tuty < 0)
+                        {
+                            for (int tutControl = 0; tutControl > tuty; tutControl--)
+                            {
+                                serialPort1.Write("4");
+                            }
+
+                        }
+
+                        if (tutz > 0)
+                        {
+                            for (int tutControl = 0; tutControl < tutz; tutControl++)
+                            {
+                                serialPort1.Write("5");
+                            }
+
+                        }
+
+                        if (tutz < 0)
+                        {
+                            for (int tutControl = 0; tutControl > tutz; tutControl--)
+                            {
+                                serialPort1.Write("6");
+                            }
+
+                        }
+
+
+
+
+
+                        //Optimum tutma konumuna gidiş bitti.
+
+
+
+
+
+                        for (replaysayac = 0; replaysayac < arraysayac; replaysayac++)
+                        {
+                            listBox1.Items.Add(arrayReplay[replaysayac]);
+
+                            if (arrayReplay[replaysayac] == 1)
+                            {
+                                serialPort1.Write("3");
+                            }
+                            if (arrayReplay[replaysayac] == 2)
+                            {
+                                serialPort1.Write("4");
+                            }
+                            if (arrayReplay[replaysayac] == 3)
+                            {
+                                serialPort1.Write("5");
+                            }
+                            if (arrayReplay[replaysayac] == 4)
+                            {
+                                serialPort1.Write("1");
+                            }
+                            if (arrayReplay[replaysayac] == 5)
+                            {
+                                serialPort1.Write("6");
+                            }
+                            if (arrayReplay[replaysayac] == 6)
+                            {
+                                serialPort1.Write("2");
+                            }
+                            if (arrayReplay[replaysayac] == 7)
+                            {
+                                serialPort1.Write("7");
+                            }
+                            if (arrayReplay[replaysayac] == 8)
+                            {
+                                serialPort1.Write("8");
+                            }
+
+
+                        }
+                        //Kopyala
+
+
+                        //sonsatir
+                        System.Threading.Thread.Sleep(sure);
+                    }
+                }
+
+
+
+                for (int syc = 0; syc < tekrar; syc++)
+                {
+                    if (homez > 0)
+                    {
+                        for (int homeControl = 0; homeControl < homez; homeControl++)
+                        {
+                            serialPort1.Write("6");
+                        }
+
+                    }
+
+                    if (homez < 0)
+                    {
+                        for (int homeControl = 0; homeControl > homez; homeControl--)
+                        {
+                            serialPort1.Write("5");
+                        }
+
+                    }
+
+                    if (homex > 0)
+                    {
+                        for (int homeControl = 0; homeControl < homex; homeControl++)
+                        {
+                            serialPort1.Write("2");
+                        }
+
+                    }
+
+                    if (homex < 0)
+                    {
+                        for (int homeControl = 0; homeControl > homex; homeControl--)
+                        {
+                            serialPort1.Write("1");
+                        }
+
+                    }
+
+                    if (homey > 0)
+                    {
+                        for (int homeControl = 0; homeControl < homey; homeControl++)
+                        {
+                            serialPort1.Write("4");
+                        }
+
+                    }
+
+                    if (homey < 0)
+                    {
+                        for (int homeControl = 0; homeControl > homey; homeControl--)
+                        {
+                            serialPort1.Write("3");
+                        }
+
+                    }
+
+                    if (gripSayac > 0)
+                    {
+                        serialPort1.Write("8");
+                    }
+
+                    if (gripSayac < 0)
+                    {
+                        serialPort1.Write("7");
+                    }
+
+                    //Home konumuna dönüş bitti.
+
+
+
+                    //Optimum Tutma Konumuna Gidiş
+
+                    if (tutx > 0)
+                    {
+                        for (int tutControl = 0; tutControl < tutx; tutControl++)
+                        {
+                            serialPort1.Write("1");
+                        }
+
+                    }
+
+                    if (tutx < 0)
+                    {
+                        for (int tutControl = 0; tutControl > tutx; tutControl--)
+                        {
+                            serialPort1.Write("2");
+                        }
+
+                    }
+
+                    serialPort1.Write("7"); // GRIPPER AÇILDI
+
+                    if (tuty > 0)
+                    {
+                        for (int tutControl = 0; tutControl < tuty; tutControl++)
+                        {
+                            serialPort1.Write("3");
+                        }
+
+                    }
+
+                    if (tuty < 0)
+                    {
+                        for (int tutControl = 0; tutControl > tuty; tutControl--)
+                        {
+                            serialPort1.Write("4");
+                        }
+
+                    }
+
+                    if (tutz > 0)
+                    {
+                        for (int tutControl = 0; tutControl < tutz; tutControl++)
+                        {
+                            serialPort1.Write("5");
+                        }
+
+                    }
+
+                    if (tutz < 0)
+                    {
+                        for (int tutControl = 0; tutControl > tutz; tutControl--)
+                        {
+                            serialPort1.Write("6");
+                        }
+
+                    }
+
+
+
+
+
+                    //Optimum tutma konumuna gidiş bitti.
+
+
+
+
+
+                    for (replaysayac = 0; replaysayac < arraysayac; replaysayac++)
+                    {
+                        listBox1.Items.Add(arrayReplay[replaysayac]);
+
+                        if (arrayReplay[replaysayac] == 1)
+                        {
+                            serialPort1.Write("3");
+                        }
+                        if (arrayReplay[replaysayac] == 2)
+                        {
+                            serialPort1.Write("4");
+                        }
+                        if (arrayReplay[replaysayac] == 3)
+                        {
+                            serialPort1.Write("5");
+                        }
+                        if (arrayReplay[replaysayac] == 4)
+                        {
+                            serialPort1.Write("1");
+                        }
+                        if (arrayReplay[replaysayac] == 5)
+                        {
+                            serialPort1.Write("6");
+                        }
+                        if (arrayReplay[replaysayac] == 6)
+                        {
+                            serialPort1.Write("2");
+                        }
+                        if (arrayReplay[replaysayac] == 7)
+                        {
+                            serialPort1.Write("7");
+                        }
+                        if (arrayReplay[replaysayac] == 8)
+                        {
+                            serialPort1.Write("8");
+                        }
+
+
+                    }
+                    //Kopyala
+
+
+                    //sonsatir
+                    System.Threading.Thread.Sleep(sure);
+
+                }
+            }
+
+
+            else if (checkBox1.Checked == false)
+            {
+                if (tekrar == 0)
+                {
+                    while (true)
+                    {
+
+                        if (homez > 0)
+                        {
+                            for (int homeControl = 0; homeControl < homez; homeControl++)
+                            {
+                                serialPort1.Write("6");
+                            }
+
+                        }
+
+                        if (homez < 0)
+                        {
+                            for (int homeControl = 0; homeControl > homez; homeControl--)
+                            {
+                                serialPort1.Write("5");
+                            }
+
+                        }
+
+                        if (homex > 0)
+                        {
+                            for (int homeControl = 0; homeControl < homex; homeControl++)
+                            {
+                                serialPort1.Write("2");
+                            }
+
+                        }
+
+                        if (homex < 0)
+                        {
+                            for (int homeControl = 0; homeControl > homex; homeControl--)
+                            {
+                                serialPort1.Write("1");
+                            }
+
+                        }
+
+                        if (homey > 0)
+                        {
+                            for (int homeControl = 0; homeControl < homey; homeControl++)
+                            {
+                                serialPort1.Write("4");
+                            }
+
+                        }
+
+                        if (homey < 0)
+                        {
+                            for (int homeControl = 0; homeControl > homey; homeControl--)
+                            {
+                                serialPort1.Write("3");
+                            }
+
+                        }
+
+                        if (gripSayac > 0)
+                        {
+                            serialPort1.Write("8");
+                        }
+
+                        if (gripSayac < 0)
+                        {
+                            serialPort1.Write("7");
+                        }
+
+                        //Home konumuna dönüş bitti.
+
+
+
+
+
+                        //Optimum Olmayan Tutma Konumuna Gidiş
+
+                        for (replaysayac = 0; replaysayac < arraysayac; replaysayac++)
+                        {
+                            listBox1.Items.Add(arrayReplayNo[replaysayac]);
+
+                            if (arrayReplayNo[replaysayac] == 1)
+                            {
+                                serialPort1.Write("3");
+                            }
+                            if (arrayReplayNo[replaysayac] == 2)
+                            {
+                                serialPort1.Write("4");
+                            }
+                            if (arrayReplayNo[replaysayac] == 3)
+                            {
+                                serialPort1.Write("5");
+                            }
+                            if (arrayReplayNo[replaysayac] == 4)
+                            {
+                                serialPort1.Write("1");
+                            }
+                            if (arrayReplayNo[replaysayac] == 5)
+                            {
+                                serialPort1.Write("6");
+                            }
+                            if (arrayReplayNo[replaysayac] == 6)
+                            {
+                                serialPort1.Write("2");
+                            }
+                            if (arrayReplayNo[replaysayac] == 7)
+                            {
+                                serialPort1.Write("7");
+                            }
+                            if (arrayReplayNo[replaysayac] == 8)
+                            {
+                                serialPort1.Write("8");
+                            }
+
+
+                        }
+
+                        //Optimum Olmayan tutma konumuna gidiş bitti.
+
+
+
+
+
+                        for (replaysayac = 0; replaysayac < arraysayac; replaysayac++)
+                        {
+                            listBox1.Items.Add(arrayReplay[replaysayac]);
+
+                            if (arrayReplay[replaysayac] == 1)
+                            {
+                                serialPort1.Write("3");
+                            }
+                            if (arrayReplay[replaysayac] == 2)
+                            {
+                                serialPort1.Write("4");
+                            }
+                            if (arrayReplay[replaysayac] == 3)
+                            {
+                                serialPort1.Write("5");
+                            }
+                            if (arrayReplay[replaysayac] == 4)
+                            {
+                                serialPort1.Write("1");
+                            }
+                            if (arrayReplay[replaysayac] == 5)
+                            {
+                                serialPort1.Write("6");
+                            }
+                            if (arrayReplay[replaysayac] == 6)
+                            {
+                                serialPort1.Write("2");
+                            }
+                            if (arrayReplay[replaysayac] == 7)
+                            {
+                                serialPort1.Write("7");
+                            }
+                            if (arrayReplay[replaysayac] == 8)
+                            {
+                                serialPort1.Write("8");
+                            }
+
+
+                        }
+                        //Kopyala
+
+
+                        //sonsatir
+                        System.Threading.Thread.Sleep(sure);
+                    }
+                }
+
+
+
+                for (int syc = 0; syc < tekrar; syc++)
+                {
+
+                    if (homez > 0)
+                    {
+                        for (int homeControl = 0; homeControl < homez; homeControl++)
+                        {
+                            serialPort1.Write("6");
+                        }
+
+                    }
+
+                    if (homez < 0)
+                    {
+                        for (int homeControl = 0; homeControl > homez; homeControl--)
+                        {
+                            serialPort1.Write("5");
+                        }
+
+                    }
+
+                    if (homex > 0)
+                    {
+                        for (int homeControl = 0; homeControl < homex; homeControl++)
+                        {
+                            serialPort1.Write("2");
+                        }
+
+                    }
+
+                    if (homex < 0)
+                    {
+                        for (int homeControl = 0; homeControl > homex; homeControl--)
+                        {
+                            serialPort1.Write("1");
+                        }
+
+                    }
+
+                    if (homey > 0)
+                    {
+                        for (int homeControl = 0; homeControl < homey; homeControl++)
+                        {
+                            serialPort1.Write("4");
+                        }
+
+                    }
+
+                    if (homey < 0)
+                    {
+                        for (int homeControl = 0; homeControl > homey; homeControl--)
+                        {
+                            serialPort1.Write("3");
+                        }
+
+                    }
+
+                    if (gripSayac > 0)
+                    {
+                        serialPort1.Write("8");
+                    }
+
+                    if (gripSayac < 0)
+                    {
+                        serialPort1.Write("7");
+                    }
+
+                    //Home konumuna dönüş bitti.
+
+
+
+
+
+                    //Optimum Olmayan Tutma Konumuna Gidiş
+
+                    for (replaysayac = 0; replaysayac < arraysayac; replaysayac++)
+                    {
+                        listBox1.Items.Add(arrayReplayNo[replaysayac]);
+
+                        if (arrayReplayNo[replaysayac] == 1)
+                        {
+                            serialPort1.Write("3");
+                        }
+                        if (arrayReplayNo[replaysayac] == 2)
+                        {
+                            serialPort1.Write("4");
+                        }
+                        if (arrayReplayNo[replaysayac] == 3)
+                        {
+                            serialPort1.Write("5");
+                        }
+                        if (arrayReplayNo[replaysayac] == 4)
+                        {
+                            serialPort1.Write("1");
+                        }
+                        if (arrayReplayNo[replaysayac] == 5)
+                        {
+                            serialPort1.Write("6");
+                        }
+                        if (arrayReplayNo[replaysayac] == 6)
+                        {
+                            serialPort1.Write("2");
+                        }
+                        if (arrayReplayNo[replaysayac] == 7)
+                        {
+                            serialPort1.Write("7");
+                        }
+                        if (arrayReplayNo[replaysayac] == 8)
+                        {
+                            serialPort1.Write("8");
+                        }
+
+
+                    }
+
+                    //Optimum Olmayan tutma konumuna gidiş bitti.
+
+
+
+
+
+                    for (replaysayac = 0; replaysayac < arraysayac; replaysayac++)
+                    {
+                        listBox1.Items.Add(arrayReplay[replaysayac]);
+
+                        if (arrayReplay[replaysayac] == 1)
+                        {
+                            serialPort1.Write("3");
+                        }
+                        if (arrayReplay[replaysayac] == 2)
+                        {
+                            serialPort1.Write("4");
+                        }
+                        if (arrayReplay[replaysayac] == 3)
+                        {
+                            serialPort1.Write("5");
+                        }
+                        if (arrayReplay[replaysayac] == 4)
+                        {
+                            serialPort1.Write("1");
+                        }
+                        if (arrayReplay[replaysayac] == 5)
+                        {
+                            serialPort1.Write("6");
+                        }
+                        if (arrayReplay[replaysayac] == 6)
+                        {
+                            serialPort1.Write("2");
+                        }
+                        if (arrayReplay[replaysayac] == 7)
+                        {
+                            serialPort1.Write("7");
+                        }
+                        if (arrayReplay[replaysayac] == 8)
+                        {
+                            serialPort1.Write("8");
+                        }
+
+
+                    }
+                    //Kopyala
+
+
+                    //sonsatir
+                    System.Threading.Thread.Sleep(sure);
+
+
+
+
+                }
+
+            }
+
+        }
+
+
+
+            private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+            {
+                if (serialPort1.IsOpen == true)
+                    serialPort1.Close();
+            }
+
+
+        }
+    }
+

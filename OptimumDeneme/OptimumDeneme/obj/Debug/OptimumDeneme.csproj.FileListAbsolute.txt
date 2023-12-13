@@ -1,0 +1,10 @@
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\obj\Debug\OptimumDeneme.csproj.AssemblyReference.cache
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\obj\Debug\OptimumDeneme.Form1.resources
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\obj\Debug\OptimumDeneme.Properties.Resources.resources
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\obj\Debug\OptimumDeneme.csproj.GenerateResource.cache
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\obj\Debug\OptimumDeneme.csproj.CoreCompileInputs.cache
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\bin\Debug\OptimumDeneme.exe.config
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\bin\Debug\OptimumDeneme.exe
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\bin\Debug\OptimumDeneme.pdb
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\obj\Debug\OptimumDeneme.exe
+C:\Users\Ömer Tarık\source\repos\OptimumDeneme\OptimumDeneme\obj\Debug\OptimumDeneme.pdb
